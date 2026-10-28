@@ -1,5 +1,6 @@
 <div align="center">
   <h3>qgis-nx</h3>
+  <p>Developing QGIS Nx from scratch (built from the ground up, no porting).</p>
 </div>
 
 <hr>
