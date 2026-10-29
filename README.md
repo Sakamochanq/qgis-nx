@@ -12,6 +12,12 @@
 
 <br>
 
+### License
+
+Release under the [GPL-3.0](./LICENSE)
+
+<br>
+
 ### Author
 
 Sakamochanq
