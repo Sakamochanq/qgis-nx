@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include <pu/Plutonium>
+
 // Include the main libnx system header, for Switch development
 #include <switch.h>
 
