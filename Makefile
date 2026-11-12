@@ -43,7 +43,7 @@ BUILD		:=	build
 SOURCES		:=	source
 DATA		:=	data
 INCLUDES	:=	include
-#ROMFS	:=	romfs
+ROMFS	:=	romfs
 
 APP_TITLE   := QGIS - 1.0 Nintendo Switch
 APP_AUTHOR  := Sakamochanq

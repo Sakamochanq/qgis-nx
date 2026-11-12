@@ -5,26 +5,19 @@
 
 using namespace pu::ui;
 using namespace pu::ui::elm;
+using namespace pu::ui::render;
 
 class MainLayout : public Layout {
 public:
-    MainLayout() : Layout::Layout() {
-        this->TitleLabel = TextBlock::New(50, 50, "Hello QGISnx");
-        this->TitleLabel->SetColor(Color(25, 160, 60, 255));
-        this->Add(this->TitleLabel);
-
-        this->ExitLabel = TextBlock::New(50, 120, "Press + button to exit.");
-        this->ExitLabel->SetColor(Color(70, 70, 70, 255));
-        this->Add(this->ExitLabel
-        
-        );
-    }
+MainLayout() : Layout::Layout() {
+    auto tex = pu::sdl2::TextureHandle::New(pu::ui::render::LoadImageFromFile("romfs:/qgisnx-boot.png"));
+    this->logo = pu::ui::elm::Image::New(0, 0, tex);
+    this->Add(this->logo);
+}
     PU_SMART_CTOR(MainLayout)
 
 private:
-    TextBlock::Ref TitleLabel;
-    TextBlock::Ref BootLabel;
-    TextBlock::Ref ExitLabel;
+    pu::ui::elm::Image::Ref logo;
 };
 
 // メイン
@@ -49,13 +42,16 @@ private:
     MainLayout::Ref layout;
 };
 
-
 int main(int argc, char* argv[]) {
     auto renderer_opts = pu::ui::render::RendererInitOptions(SDL_INIT_EVERYTHING, pu::ui::render::RendererHardwareFlags);
 
     // フォント有効化
     renderer_opts.SetPlServiceType(PlServiceType_User);
     renderer_opts.AddDefaultAllSharedFonts();
+
+    renderer_opts.init_romfs = true;
+    renderer_opts.init_img = true;
+    renderer_opts.sdl_img_flags = IMG_INIT_PNG;
 
     // 入力
     renderer_opts.AddInputNpadStyleTag(HidNpadStyleSet_NpadStandard);
