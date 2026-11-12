@@ -45,7 +45,7 @@ DATA		:=	data
 INCLUDES	:=	include
 ROMFS	:=	romfs
 
-APP_TITLE   := QGIS - 1.0 Nintendo Switch
+APP_TITLE   := QGIS Nx
 APP_AUTHOR  := Sakamochanq
 APP_VERSION := 1.0.1
 ICON        := assets/icon.jpg	# JPEG Only, 256x256
