@@ -8,7 +8,7 @@
 
 <div align="center">
   <a href=""#">
-    <img src="./.github/screenie/screenie.jpg" width="300px">
+    <img src="./.github/screenie/screenie.jpg" width="500px">
   </a>
 </div>
 
