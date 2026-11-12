@@ -1,41 +1,72 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
-#include <pu/Plutonium>
-
 // Include the main libnx system header, for Switch development
 #include <switch.h>
 
-int main(int argc, char* argv[])
-{
-    // コンソールの初期化
-    consoleInit(NULL);
-    padConfigureInput(1, HidNpadStyleSet_NpadStandard);
+#include <pu/Plutonium>
 
-    PadState pad;
-    padInitializeDefault(&pad);
+using namespace pu::ui;
+using namespace pu::ui::elm;
 
-    // Hello World! を表示
-    printf("\nHello World!\n");
-    printf("\nPress + (plus) to exit.\n");
+class MainLayout : public Layout {
+public:
+    MainLayout() : Layout::Layout() {
+        this->TitleLabel = TextBlock::New(50, 50, "Hello QGISnx");
+        this->TitleLabel->SetColor(Color(25, 160, 60, 255));
+        this->Add(this->TitleLabel);
 
+        this->ExitLabel = TextBlock::New(50, 120, "Press + button to exit.");
+        this->ExitLabel->SetColor(Color(70, 70, 70, 255));
+        this->Add(this->ExitLabel
+        
+        );
+    }
+    PU_SMART_CTOR(MainLayout)
 
-    while (appletMainLoop())
-    {
-        padUpdate(&pad);
+private:
+    TextBlock::Ref TitleLabel;
+    TextBlock::Ref BootLabel;
+    TextBlock::Ref ExitLabel;
+};
 
-        u64 kDown = padGetButtonsDown(&pad);
+// メイン
+class MainApplication : public pu::ui::Application {
+public:
+    using Application::Application;
+    PU_SMART_CTOR(MainApplication)
+
+    void OnLoad() override {
+        this->layout = MainLayout::New();
+        this->LoadLayout(this->layout);
 
         // ＋ボタンで終了
-        if (kDown & HidNpadButton_Plus)
-            break;
-
-        // 更新
-        consoleUpdate(NULL);
+        this->SetOnInput([this](const u64 down, const u64 up, const u64 held, const pu::ui::TouchPoint pos) {
+            if (down & HidNpadButton_Plus) {
+                this->Close();
+            }
+        });
     }
 
-    // クリーンアップ
-    consoleExit(NULL);
+private:
+    MainLayout::Ref layout;
+};
+
+
+int main(int argc, char* argv[]) {
+    auto renderer_opts = pu::ui::render::RendererInitOptions(SDL_INIT_EVERYTHING, pu::ui::render::RendererHardwareFlags);
+
+    // フォント有効化
+    renderer_opts.SetPlServiceType(PlServiceType_User);
+    renderer_opts.AddDefaultAllSharedFonts();
+
+    // 入力
+    renderer_opts.AddInputNpadStyleTag(HidNpadStyleSet_NpadStandard);
+    renderer_opts.AddInputNpadIdType(HidNpadIdType_Handheld);
+    renderer_opts.AddInputNpadIdType(HidNpadIdType_No1);
+
+    auto renderer = pu::ui::render::Renderer::New(renderer_opts);
+    auto app = MainApplication::New(renderer);
+
+    app->Load();
+    app->Show();
+
     return 0;
 }
